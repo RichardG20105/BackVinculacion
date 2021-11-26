@@ -57,7 +57,7 @@ public class ControladorDocente {
 		docenteAct.setCedulaDocente(docente.getCedulaDocente());
 		docenteAct.setContacto(docente.getContacto());
 		docenteAct.setCorreoElectronico(docente.getCorreoElectronico());
-		docenteAct.setGeneroDocente(docente.getGeneroDocente());
+		docenteAct.setSexoDocente(docente.getSexoDocente());
 		docenteAct.setRelacionLaboral(docente.getRelacionLaboral());
 		
 		return ResponseEntity.ok(this.RepositorioDocente.save(docenteAct));

@@ -28,22 +28,22 @@ public class Docente {
 	@Column(name = "relacionlaboral")
 	private String relacionLaboral;
 	
-	@Column(name = "generodocente")
-	private String generoDocente;
+	@Column(name = "sexodocente")
+	private String sexoDocente;
 	
 	public Docente() {
 		super();
 	}
 	
 	public Docente(String cedulaDocente, String nombreDocente, String contacto, String correoElectronico,
-			String relacionLaboral, String generoDocente, Long idCarrera) {
+			String relacionLaboral, String sexoDocente, Long idCarrera) {
 		super();
 		this.cedulaDocente = cedulaDocente;
 		this.nombreDocente = nombreDocente;
 		this.contacto = contacto;
 		this.correoElectronico = correoElectronico;
 		this.relacionLaboral = relacionLaboral;
-		this.generoDocente = generoDocente;
+		this.sexoDocente = sexoDocente;
 		this.idCarrera = idCarrera;
 	}
 
@@ -97,12 +97,12 @@ public class Docente {
 		this.relacionLaboral = relacionLaboral;
 	}
 
-	public String getGeneroDocente() {
-		return generoDocente;
+	public String getSexoDocente() {
+		return sexoDocente;
 	}
 
-	public void setGeneroDocente(String generoDocente) {
-		this.generoDocente = generoDocente;
+	public void setSexoDocente(String sexoDocente) {
+		this.sexoDocente = sexoDocente;
 	}
 
 	public Long getIdCarrera() {

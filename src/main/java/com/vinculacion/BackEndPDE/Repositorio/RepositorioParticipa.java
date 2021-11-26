@@ -12,5 +12,5 @@ import com.vinculacion.BackEndPDE.Entidades.Participa;
 public interface RepositorioParticipa extends JpaRepository<Participa, Long>{
 	Boolean existsByIdProyectoAndIdDocenteAndAnioParticipaDoc(Long idProyecto, Long idDocente, Date anioParticipaDoc);
 	List<Participa> findByIdProyecto(Long idProyecto);
-	List<Participa> findAllByIdProyectoAndIdDocenteAndAnioParticipacionDocente(Long idProyecto, Long idDocente, Date anioParticipacionDocente);
+	List<Participa> findAllByIdProyectoAndIdDocenteAndAnioParticipaDoc(Long idProyecto, Long idDocente, Date anioParticipaDoc);
 }

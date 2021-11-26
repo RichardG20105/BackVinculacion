@@ -57,7 +57,7 @@ public class ControladorEstudiante {
 		estudianteAct.setCedulaEstudiante(estudiante.getCedulaEstudiante());
 		estudianteAct.setNombreEstudiante(estudiante.getNombreEstudiante());
 		estudianteAct.setSemestre(estudiante.getSemestre());
-		estudianteAct.setGeneroEstudiante(estudiante.getGeneroEstudiante());
+		estudianteAct.setSexoEstudiante(estudiante.getSexoEstudiante());
 		estudianteAct.setIdCarrera(estudiante.getIdCarrera());
 		
 		return ResponseEntity.ok(this.RepositorioEstudiante.save(estudianteAct));

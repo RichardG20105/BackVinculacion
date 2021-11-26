@@ -22,20 +22,20 @@ public class Estudiante {
 	@Column(name = "semestre")
 	private int semestre;
 	
-	@Column(name = "generoestudiante")
-	private String generoEstudiante;
+	@Column(name = "sexoestudiante")
+	private String sexoEstudiante;
 
 	public Estudiante() {
 		super();
 	}
 
-	public Estudiante(String cedulaEstudiante, String nombreEstudiante, int semestre, String generoEstudiante,
+	public Estudiante(String cedulaEstudiante, String nombreEstudiante, int semestre, String sexoEstudiante,
 			Long idCarrera) {
 		super();
 		this.cedulaEstudiante = cedulaEstudiante;
 		this.nombreEstudiante = nombreEstudiante;
 		this.semestre = semestre;
-		this.generoEstudiante = generoEstudiante;
+		this.sexoEstudiante = sexoEstudiante;
 		this.idCarrera = idCarrera;
 	}
 
@@ -71,12 +71,12 @@ public class Estudiante {
 		this.semestre = semestre;
 	}
 
-	public String getGeneroEstudiante() {
-		return generoEstudiante;
+	public String getSexoEstudiante() {
+		return sexoEstudiante;
 	}
 
-	public void setGeneroEstudiante(String generoEstudiante) {
-		this.generoEstudiante = generoEstudiante;
+	public void setSexoEstudiante(String sexoEstudiante) {
+		this.sexoEstudiante = sexoEstudiante;
 	}
 
 	public Long getIdCarrera() {

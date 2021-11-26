@@ -40,7 +40,7 @@ public class ControladorParticipa {
 			throw new ResourceNotFoundException("Ya existe un Docente que participa en este Proyecto y en este mismo Año");
 		}
 		
-		List<Participa> participaComp = RepositorioParticipa.findAllByIdProyectoAndIdDocenteAndAnioParticipacionDocente(participa.getIdProyecto(),participa.getIdDocente(),participa.getAnioParticipaDoc());
+		List<Participa> participaComp = RepositorioParticipa.findAllByIdProyectoAndIdDocenteAndAnioParticipaDoc(participa.getIdProyecto(),participa.getIdDocente(),participa.getAnioParticipaDoc());
 		if(participaComp.size() >= 2) {
 			throw new ResourceNotFoundException("Este docente ya esta participando en dos Proyectos este Año");
 		}

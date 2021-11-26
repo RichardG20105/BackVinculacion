@@ -21,10 +21,10 @@ public class Participa {
 	@Column(name = "cargo")
 	private String cargo;
 	
-	@Column(name = "horasParticion")
+	@Column(name = "horasparticipacion")
 	private int horasParticipacion;
 	
-	@Column(name = "anoparticipadoc")
+	@Column(name = "anioparticipadoc")
 	private Date anioParticipaDoc;
 
 	public Participa() {
@@ -87,4 +87,5 @@ public class Participa {
 	public void setAnioParticipaDoc(Date anioParticipaDoc) {
 		this.anioParticipaDoc = anioParticipaDoc;
 	}
+
 }
