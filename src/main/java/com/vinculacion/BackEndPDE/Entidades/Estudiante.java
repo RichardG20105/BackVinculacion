@@ -20,7 +20,7 @@ public class Estudiante {
 	private String nombreEstudiante;
 	
 	@Column(name = "semestre")
-	private int semestre;
+	private String semestre;
 	
 	@Column(name = "sexoestudiante")
 	private String sexoEstudiante;
@@ -29,7 +29,7 @@ public class Estudiante {
 		super();
 	}
 
-	public Estudiante(String cedulaEstudiante, String nombreEstudiante, int semestre, String sexoEstudiante,
+	public Estudiante(String cedulaEstudiante, String nombreEstudiante, String semestre, String sexoEstudiante,
 			Long idCarrera) {
 		super();
 		this.cedulaEstudiante = cedulaEstudiante;
@@ -63,11 +63,11 @@ public class Estudiante {
 		this.nombreEstudiante = nombreEstudiante;
 	}
 
-	public int getSemestre() {
+	public String getSemestre() {
 		return semestre;
 	}
 
-	public void setSemestre(int semestre) {
+	public void setSemestre(String semestre) {
 		this.semestre = semestre;
 	}
 
