@@ -13,7 +13,10 @@ public class Facultad {
 	
 	@Column(name = "nombrefacultad")
 	private String nombreFacultad;
-
+	
+	public Facultad() {
+		super();
+	}
 	public Facultad(String nombreFacultad) {
 		super();
 		this.nombreFacultad = nombreFacultad;
