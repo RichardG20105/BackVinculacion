@@ -32,6 +32,13 @@ public class ControladorFacultad {
 		return Facultades;
 	}
 	
+	@GetMapping("{id}")
+	public Facultad getFacultad(@PathVariable(value = "id")Long IDFacultad)throws ResourceNotFoundException {
+		Facultad facu = RepositorioFacultad.findById(IDFacultad)
+				.orElseThrow(() -> new ResourceNotFoundException("No se encontro la Facultad con ese ID"));
+		return facu;
+	}
+	
 	@PostMapping("Registrar")
 	public Facultad setFacultad(@Valid @RequestBody Facultad facultad)throws ResourceNotFoundException{
 		if(RepositorioFacultad.existsByNombreFacultad(facultad.getNombreFacultad())) {

@@ -42,6 +42,13 @@ public class ControladorCarrera {
 		return Carreras;
 	}
 	
+	@GetMapping("Facultad/{id}")
+	public Long getCarreraFacultad(@PathVariable(value = "id")Long IDCarrera)throws ResourceNotFoundException{
+		Carrera carrera = RepositorioCarrera.findById(IDCarrera)
+				.orElseThrow(() -> new ResourceNotFoundException("No se encontro la carrera con ese ID"));
+		return carrera.getIdFacultad();
+	}
+	
 	@PostMapping("Registrar")
 	public Carrera registrarCarrera(@Valid @RequestBody Carrera carrera)throws ResourceNotFoundException {
 		if(RepositorioCarrera.existsByNombreCarrera(carrera.getNombreCarrera())) {

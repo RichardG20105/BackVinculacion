@@ -34,6 +34,13 @@ public class ControladorDocente {
 		return Docentes;
 	}
 	
+	@GetMapping("{id}")
+	public Docente getDocente(@PathVariable(value = "id")Long IDDocente)throws ResourceNotFoundException{
+		Docente docente = RepositorioDocente.findById(IDDocente)
+				.orElseThrow(() -> new ResourceNotFoundException("No se encontro el Docente con ese ID"));
+		return docente;
+	}
+	
 	@PostMapping("Registrar")
 	public Docente setDocente(@Valid @RequestBody Docente docente)throws ResourceNotFoundException{
 		if(RepositorioDocente.existsByCedulaDocente(docente.getCedulaDocente())) {
