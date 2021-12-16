@@ -25,13 +25,19 @@ public class ControladorProyecto {
 	
 	@GetMapping("ListarProyectos")
 	public List<Proyecto> getProyectos(){
-		List<Proyecto> Proyectos = RepositorioProyecto.findAll();
+		List<Proyecto> Proyectos = RepositorioProyecto.findAllByOrderByIdProyectoDesc();
 		
 		if(Proyectos.isEmpty())
 			new ResourceNotFoundException("No se encontraron Proyectos almacenados");
 		return Proyectos;
 	}
 	
+	@GetMapping("{id}")
+	public Proyecto getProyecto(@PathVariable(value = "id")Long idProyecto)throws ResourceNotFoundException{
+		Proyecto proyecto = RepositorioProyecto.findById(idProyecto)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe el Proyecto con ese ID"));
+		return proyecto;
+	}
 	@PostMapping("Registrar")
 	public Proyecto setProyecto(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
 		if(RepositorioProyecto.existsByCodigo(proyecto.getCodigo())) {
