@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinculacion.BackEndPDE.Entidades.Certificado;
+import com.vinculacion.BackEndPDE.Entidades.Estudiante;
 import com.vinculacion.BackEndPDE.Excepciones.ResourceNotFoundException;
 import com.vinculacion.BackEndPDE.Repositorio.RepositorioCertificado;
 
@@ -31,6 +32,13 @@ public class ControladorCertificado {
 		if(Certificados.isEmpty())
 			new ResourceNotFoundException("No existen Certificados almacenados.");
 		return Certificados;
+	}
+	
+	@GetMapping("{id}")
+	public Certificado getCertificado(@PathVariable(value = "id")Long IDCertificado)throws ResourceNotFoundException{
+		Certificado certificado = RepositorioCertificado.findById(IDCertificado)
+				.orElseThrow(() -> new ResourceNotFoundException("No se encontro el Certificado con ese ID"));
+		return certificado;
 	}
 	
 	@PostMapping("Registrar")
