@@ -1,6 +1,7 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.persistence.*;
 

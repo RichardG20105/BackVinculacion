@@ -1,7 +1,6 @@
 package com.vinculacion.BackEndPDE.Controladores;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -33,8 +32,8 @@ public class ControladorParticipa {
 			throw new ResourceNotFoundException("No hay participaciones registradas");
 		return participacion;
 	}
-	@GetMapping("ListarParticipacion")
-	public List<Participa> getParticipa(@RequestBody Proyecto proyecto)throws ResourceNotFoundException{
+	@PostMapping("ListarParticipacion")
+	public List<Participa> getParticipa(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
 		List<Participa> participa = RepositorioParticipa.findAllByProyecto(proyecto);
 		if(participa.isEmpty())
 			throw new ResourceNotFoundException("No existen Docentes registrados en este Proyecto");
