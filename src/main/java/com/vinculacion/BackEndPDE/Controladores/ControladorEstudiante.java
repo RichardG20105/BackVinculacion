@@ -28,7 +28,7 @@ public class ControladorEstudiante {
 	
 	@GetMapping("ListarEstudiantes")
 	public List<Estudiante> getEstudiantes()throws ResourceNotFoundException{
-		List<Estudiante> Estudiantes = RepositorioEstudiante.findAll();
+		List<Estudiante> Estudiantes = RepositorioEstudiante.findAllByOrderByIdEstudianteDesc();
 		
 		if(Estudiantes.isEmpty())
 			throw new ResourceNotFoundException("No se encontraron Estudiantes registrados");

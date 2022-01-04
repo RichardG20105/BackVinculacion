@@ -1,7 +1,14 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Docente")
 public class Docente {
@@ -31,12 +38,16 @@ public class Docente {
 	@Column(name = "sexodocente")
 	private String sexoDocente;
 	
+	@OneToMany(mappedBy="docente", cascade = CascadeType.ALL)
+	private Set<Participa> participas;
+	
+	
 	public Docente() {
 		super();
 	}
 	
 	public Docente(String cedulaDocente, String nombreDocente, String contacto, String correoElectronico,
-			String relacionLaboral, String sexoDocente, Long idCarrera) {
+			String relacionLaboral, String sexoDocente, Long idCarrera, Participa... participas) {
 		super();
 		this.cedulaDocente = cedulaDocente;
 		this.nombreDocente = nombreDocente;
@@ -45,6 +56,8 @@ public class Docente {
 		this.relacionLaboral = relacionLaboral;
 		this.sexoDocente = sexoDocente;
 		this.idCarrera = idCarrera;
+		for(Participa participa : participas) participa.setDocente(this);
+		this.participas = Stream.of(participas).collect(Collectors.toSet());
 	}
 
 
@@ -112,4 +125,9 @@ public class Docente {
 	public void setIdCarrera(Long idCarrera) {
 		this.idCarrera = idCarrera;
 	}
+
+	public void setParticipas(Set<Participa> participas) {
+		this.participas = participas;
+	}
+	
 }

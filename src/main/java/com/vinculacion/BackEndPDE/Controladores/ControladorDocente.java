@@ -28,7 +28,7 @@ public class ControladorDocente {
 	
 	@GetMapping("ListarDocentes")
 	public List<Docente> getDocentes()throws ResourceNotFoundException{
-		List<Docente> Docentes = RepositorioDocente.findAll();
+		List<Docente> Docentes = RepositorioDocente.findAllByOrderByIdDocenteDesc();
 		if(Docentes.isEmpty())
 			new ResourceNotFoundException("No existen Docentes ingresados");
 		return Docentes;
@@ -60,6 +60,7 @@ public class ControladorDocente {
 			}
 		}
 		
+		docenteAct.setIdCarrera(docente.getIdCarrera());
 		docenteAct.setNombreDocente(docente.getNombreDocente());
 		docenteAct.setCedulaDocente(docente.getCedulaDocente());
 		docenteAct.setContacto(docente.getContacto());

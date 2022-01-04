@@ -1,7 +1,13 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "proyecto")
 public class Proyecto {
@@ -18,6 +24,9 @@ public class Proyecto {
 	
 	@Column(name = "resolucion")
 	private String resolucion;
+	
+	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
+	private Set<Participa> participas = new HashSet<>();
 
 	public Proyecto() {
 		super();

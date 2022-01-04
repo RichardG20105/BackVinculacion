@@ -1,6 +1,7 @@
 package com.vinculacion.BackEndPDE.Controladores;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinculacion.BackEndPDE.Entidades.Participa;
+import com.vinculacion.BackEndPDE.Entidades.Proyecto;
 import com.vinculacion.BackEndPDE.Excepciones.ResourceNotFoundException;
 import com.vinculacion.BackEndPDE.Repositorio.RepositorioParticipa;
 
@@ -24,28 +26,27 @@ public class ControladorParticipa {
 	@Autowired
 	private RepositorioParticipa RepositorioParticipa;
 	
-	@GetMapping("ListarProyectoDocente/{id}")
-	public List<Participa> getParticipa(@PathVariable(value = "id")Long IDProyecto)throws ResourceNotFoundException{
-		List<Participa> relacion = RepositorioParticipa.findByIdProyecto(IDProyecto);
+	@GetMapping("Listado")
+	public List<Participa> getListado()throws ResourceNotFoundException{
+		List<Participa> participacion = RepositorioParticipa.findAll();
+		if(participacion.isEmpty())
+			throw new ResourceNotFoundException("No hay participaciones registradas");
+		return participacion;
+	}
+	@GetMapping("ListarParticipacion")
+	public List<Participa> getParticipa(@RequestBody Proyecto proyecto)throws ResourceNotFoundException{
+		List<Participa> participa = RepositorioParticipa.findAllByProyecto(proyecto);
+		if(participa.isEmpty())
+			throw new ResourceNotFoundException("No existen Docentes registrados en este Proyecto");
+		return participa;
+	}
+	/*@GetMapping("ListarProyectoDocente/{id}")
+	public List<Optional<Object>> getParticipa(@PathVariable(value = "id")Long IDProyecto)throws ResourceNotFoundException{
+		List<Optional<Object>> relacion = RepositorioParticipa.findAllByPartipacion(IDProyecto);
 		if(relacion.isEmpty()) {
 			throw new ResourceNotFoundException("No existe docentes en este proyecto");
 		}
 		return relacion;
-	}
-	
-	
-	@PostMapping("Registrar")
-	public Participa setParticipa(@Valid @RequestBody Participa participa)throws ResourceNotFoundException{
-		if(RepositorioParticipa.existsByIdProyectoAndIdDocenteAndAnioParticipaDoc(participa.getIdProyecto(),participa.getIdDocente(), participa.getAnioParticipaDoc())){
-			throw new ResourceNotFoundException("Ya existe un Docente que participa en este Proyecto y en este mismo Año");
-		}
-		
-		List<Participa> participaComp = RepositorioParticipa.findAllByIdProyectoAndIdDocenteAndAnioParticipaDoc(participa.getIdProyecto(),participa.getIdDocente(),participa.getAnioParticipaDoc());
-		if(participaComp.size() >= 2) {
-			throw new ResourceNotFoundException("Este docente ya esta participando en dos Proyectos este Año");
-		}
-		
-		return this.RepositorioParticipa.save(participa);
 	}
 	
 	@PutMapping("Actualizar/{id}")
@@ -57,5 +58,5 @@ public class ControladorParticipa {
 		participaAct.setHorasParticipacion(participa.getHorasParticipacion());
 		
 		return ResponseEntity.ok(this.RepositorioParticipa.save(participaAct));	
-	}
+	}*/
 }

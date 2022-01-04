@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinculacion.BackEndPDE.Entidades.Certificado;
-import com.vinculacion.BackEndPDE.Entidades.Estudiante;
 import com.vinculacion.BackEndPDE.Excepciones.ResourceNotFoundException;
 import com.vinculacion.BackEndPDE.Repositorio.RepositorioCertificado;
 

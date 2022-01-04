@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Participa")
 public class Participa {
@@ -12,11 +15,6 @@ public class Participa {
 	@Column(name = "idparticipa")
 	private Long idParticipa;
 	
-	@Column(name = "idproyecto")
-	private Long idProyecto;
-	
-	@Column(name = "iddocente")
-	private Long idDocente;
 	
 	@Column(name = "cargo")
 	private String cargo;
@@ -26,18 +24,26 @@ public class Participa {
 	
 	@Column(name = "anioparticipadoc")
 	private Date anioParticipaDoc;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "iddocente", referencedColumnName = "iddocente")
+	private Docente docente;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "idproyecto", referencedColumnName = "idproyecto")
+	private Proyecto proyecto;
 
 	public Participa() {
 		super();
 	}
 
-	public Participa(Long idProyecto, Long idDocente, String cargo, int horasParticipacion, Date anioParticipaDoc) {
+	public Participa(String cargo, int horasParticipacion, Date anioParticipaDoc,
+			Docente docente) {
 		super();
-		this.idProyecto = idProyecto;
-		this.idDocente = idDocente;
 		this.cargo = cargo;
 		this.horasParticipacion = horasParticipacion;
 		this.anioParticipaDoc = anioParticipaDoc;
+		this.docente = docente;
 	}
 
 	public Long getIdParticipa() {
@@ -46,22 +52,6 @@ public class Participa {
 
 	public void setIdParticipa(Long idParticipa) {
 		this.idParticipa = idParticipa;
-	}
-
-	public Long getIdProyecto() {
-		return idProyecto;
-	}
-
-	public void setIdProyecto(Long idProyecto) {
-		this.idProyecto = idProyecto;
-	}
-
-	public Long getIdDocente() {
-		return idDocente;
-	}
-
-	public void setIdDocente(Long idDocente) {
-		this.idDocente = idDocente;
 	}
 
 	public String getCargo() {
@@ -88,4 +78,16 @@ public class Participa {
 		this.anioParticipaDoc = anioParticipaDoc;
 	}
 
+	public Docente getDocente() {
+		return docente;
+	}
+
+	public void setDocente(Docente docente) {
+		this.docente = docente;
+	}
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
+	}
+	
 }
