@@ -32,12 +32,32 @@ public class ControladorParticipa {
 			throw new ResourceNotFoundException("No hay participaciones registradas");
 		return participacion;
 	}
+	
+	@GetMapping("{id}")
+	public Participa getDocenteParticipacion(@PathVariable(value = "id")Long idParticipacion)throws ResourceNotFoundException {
+		Participa docente = RepositorioParticipa.findById(idParticipacion)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe la participacion con ese Id"));
+		return docente;
+	}
+	
 	@PostMapping("ListarParticipacion")
 	public List<Participa> getParticipa(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
-		List<Participa> participa = RepositorioParticipa.findAllByProyecto(proyecto);
+		List<Participa> participa = RepositorioParticipa.findAllByProyectoAndCargo(proyecto,"Integrante");
 		if(participa.isEmpty())
 			throw new ResourceNotFoundException("No existen Docentes registrados en este Proyecto");
 		return participa;
+	}
+	
+	@PostMapping("Coordinador")
+	public Participa getCoordinador(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
+		Participa participa = RepositorioParticipa.findByProyectoAndCargo(proyecto,"Coordinador")
+				.orElseThrow(() -> new ResourceNotFoundException("No existe un coordinador en este Proyecto"));
+		return participa;
+	}
+	
+	@PostMapping("Registrar")
+	public Participa setParticipa(@Valid @RequestBody Participa participa) throws ResourceNotFoundException{
+		return this.RepositorioParticipa.save(participa);
 	}
 	/*@GetMapping("ListarProyectoDocente/{id}")
 	public List<Optional<Object>> getParticipa(@PathVariable(value = "id")Long IDProyecto)throws ResourceNotFoundException{
@@ -46,16 +66,19 @@ public class ControladorParticipa {
 			throw new ResourceNotFoundException("No existe docentes en este proyecto");
 		}
 		return relacion;
-	}
+	}*/
 	
 	@PutMapping("Actualizar/{id}")
 	public ResponseEntity<Participa> putParticipa(@PathVariable(value = "id")Long IDParticipa,@Valid @RequestBody Participa participa)throws ResourceNotFoundException{
 		Participa participaAct = RepositorioParticipa.findById(IDParticipa)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe una participacion con este ID"));
-		
+		List<Participa> participaciones = RepositorioParticipa.findAllByDocenteAndProyectoAndAnioParticipaDoc(participa.getDocente(),participa.getProyecto(),participa.getAnioParticipaDoc());
+		if(participaciones.size() > 1) {
+			throw new ResourceNotFoundException("El docente ya se encuentra en 2 proyectos");
+		}
 		participaAct.setAnioParticipaDoc(participa.getAnioParticipaDoc());
 		participaAct.setHorasParticipacion(participa.getHorasParticipacion());
 		
-		return ResponseEntity.ok(this.RepositorioParticipa.save(participaAct));	
-	}*/
+		return ResponseEntity.ok(this.RepositorioParticipa.save(participaAct));
+	}
 }

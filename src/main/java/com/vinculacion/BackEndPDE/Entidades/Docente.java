@@ -60,8 +60,6 @@ public class Docente {
 		this.participas = Stream.of(participas).collect(Collectors.toSet());
 	}
 
-
-
 	public Long getIdDocente() {
 		return idDocente;
 	}
@@ -129,5 +127,4 @@ public class Docente {
 	public void setParticipas(Set<Participa> participas) {
 		this.participas = participas;
 	}
-	
 }

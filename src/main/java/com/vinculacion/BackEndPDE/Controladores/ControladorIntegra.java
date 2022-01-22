@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinculacion.BackEndPDE.Entidades.Integra;
+import com.vinculacion.BackEndPDE.Entidades.Proyecto;
 import com.vinculacion.BackEndPDE.Excepciones.ResourceNotFoundException;
 import com.vinculacion.BackEndPDE.Repositorio.RepositorioIntegra;
 @RestController
@@ -26,14 +27,37 @@ public class ControladorIntegra {
 	@Autowired
 	private RepositorioIntegra RepositorioIntegra;
 	
-	@GetMapping("ListarProyectoEstudiante/{id}")
+	
+	@GetMapping("Listado")
+	public List<Integra> getListado() throws ResourceNotFoundException{
+		List<Integra> integra = RepositorioIntegra.findAll();
+		if(integra.isEmpty())
+			throw new ResourceNotFoundException("No hay estudiantes registrados en proyectos");
+		return integra;
+	}
+	
+	@GetMapping("{id}")
+	public Integra getEstudianteIntegra(@PathVariable(value = "id")Long idIntegra)throws ResourceNotFoundException{
+		Integra estudiante = RepositorioIntegra.findById(idIntegra)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe un estudiante con ese Id"));
+		return estudiante;
+	}
+	
+	@PostMapping("ListarIntegracion")
+	public List<Integra> getIntegra(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
+		List<Integra> integra = RepositorioIntegra.findAllByProyecto(proyecto);
+		if(integra.isEmpty())
+			throw new ResourceNotFoundException("No existen estudiante registrados en este proyecto");
+		return integra;
+	}
+	/*@GetMapping("ListarProyectoEstudiante/{id}")
 	public List<Integra> getIntegra(@PathVariable(value = "id")Long IDProyecto)throws ResourceNotFoundException{
 		List<Integra> relacion = RepositorioIntegra.findAllByIdProyecto(IDProyecto);
 		if(relacion.isEmpty()) {
 			throw new ResourceNotFoundException("No existe estudiantes en este proyecto");
 		}
 		return relacion;
-	}
+	}*/
 	@PostMapping("Registrar")
 	public Integra setIntegra(@Valid @RequestBody Integra integra)throws ResourceNotFoundException{
 		return this.RepositorioIntegra.save(integra);
@@ -44,7 +68,7 @@ public class ControladorIntegra {
 		Integra integraAct = RepositorioIntegra.findById(IDIntegra)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe un Docente en un Proyecto con ese ID"));
 		
-		integraAct.setAnoParticipaEst(integra.getAnoParticipaEst());
+		integraAct.setAnioParticipaEst(integra.getAnioParticipaEst());
 		integraAct.setFormaParticipacion(integra.getFormaParticipacion());
 		
 		return ResponseEntity.ok(this.RepositorioIntegra.save(integraAct));

@@ -1,10 +1,13 @@
 package com.vinculacion.BackEndPDE.Repositorio;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.vinculacion.BackEndPDE.Entidades.Docente;
 import com.vinculacion.BackEndPDE.Entidades.Participa;
 import com.vinculacion.BackEndPDE.Entidades.Proyecto;
 
@@ -18,5 +21,7 @@ public interface RepositorioParticipa extends JpaRepository<Participa, Long>{
 			+ "ON docente.iddocente = participa.iddocente\r\n"
 			+ "where idproyecto = ?1",nativeQuery = true)
 	List<Optional<Object>> findAllByPartipacion(Long idProyecto);*/
-	List<Participa> findAllByProyecto(Proyecto proyecto);
+	List<Participa> findAllByProyectoAndCargo(Proyecto proyecto,String cargo);
+	Optional<Participa> findByProyectoAndCargo(Proyecto proyecto, String cargo);
+	List<Participa> findAllByDocenteAndProyectoAndAnioParticipaDoc(Docente docente, Proyecto proyecto,Date anioParticipaDoc);
 }

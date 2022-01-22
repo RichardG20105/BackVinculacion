@@ -16,6 +16,8 @@ public class Participa {
 	@Column(name = "idparticipa")
 	private Long idParticipa;
 	
+	@Column(name = "facultad")
+	private String facultad;
 	
 	@Column(name = "cargo")
 	private String cargo;
@@ -38,13 +40,15 @@ public class Participa {
 		super();
 	}
 
-	public Participa(String cargo, int horasParticipacion, Date anioParticipaDoc,
-			Docente docente) {
+	public Participa(String facultad, String cargo, int horasParticipacion, Date anioParticipaDoc, Docente docente,
+			Proyecto proyecto) {
 		super();
+		this.facultad = facultad;
 		this.cargo = cargo;
 		this.horasParticipacion = horasParticipacion;
 		this.anioParticipaDoc = anioParticipaDoc;
 		this.docente = docente;
+		this.proyecto = proyecto;
 	}
 
 	public Long getIdParticipa() {
@@ -61,6 +65,14 @@ public class Participa {
 
 	public void setCargo(String cargo) {
 		this.cargo = cargo;
+	}
+	
+	public String getFacultad() {
+		return facultad;
+	}
+
+	public void setFacultad(String facultad) {
+		this.facultad = facultad;
 	}
 
 	public int getHorasParticipacion() {
@@ -85,6 +97,10 @@ public class Participa {
 
 	public void setDocente(Docente docente) {
 		this.docente = docente;
+	}
+	
+	public Proyecto getProyecto() {
+		return proyecto;
 	}
 
 	public void setProyecto(Proyecto proyecto) {

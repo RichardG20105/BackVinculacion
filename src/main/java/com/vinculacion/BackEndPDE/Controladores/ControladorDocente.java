@@ -41,6 +41,16 @@ public class ControladorDocente {
 		return docente;
 	}
 	
+	@GetMapping("Cedula/{cedula}")
+	public Docente getDocenteCedula(@PathVariable(value="cedula")String cedula)throws ResourceNotFoundException{
+		if(RepositorioDocente.existsByCedulaDocente(cedula)) {
+			Docente docente = RepositorioDocente.findByCedulaDocente(cedula);
+			return docente;		
+		}else {
+			throw new ResourceNotFoundException("No existen un docente con ese número de cedula");
+		}		
+	}
+	
 	@PostMapping("Registrar")
 	public Docente setDocente(@Valid @RequestBody Docente docente)throws ResourceNotFoundException{
 		if(RepositorioDocente.existsByCedulaDocente(docente.getCedulaDocente())) {

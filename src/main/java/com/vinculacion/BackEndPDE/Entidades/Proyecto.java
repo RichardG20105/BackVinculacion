@@ -27,7 +27,10 @@ public class Proyecto {
 	
 	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
 	private Set<Participa> participas = new HashSet<>();
-
+	
+	@OneToMany(mappedBy="proyecto", cascade = CascadeType.ALL)
+	private Set<Integra> integras = new HashSet<>();
+	
 	public Proyecto() {
 		super();
 	}

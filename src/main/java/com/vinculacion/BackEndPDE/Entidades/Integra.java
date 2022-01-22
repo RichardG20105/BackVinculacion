@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Integra")
 public class Integra {
@@ -12,28 +15,34 @@ public class Integra {
 	@Column(name = "idintegra")
 	private Long idIntegra;
 	
-	@Column(name = "idproyecto")
-	private Long idProyecto;
-	
-	@Column(name = "idestudiante")
-	private Long idEstudiante;
+	@Column(name="carrera")
+	private String carrera;
 	
 	@Column(name = "formaparticipacion")
 	private String formaParticipacion;
 	
-	@Column(name = "anoparticipaest")
-	private Date anoParticipaEst;
+	@Column(name = "anioparticipaest")
+	private Date anioParticipaEst;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "idestudiante",referencedColumnName="idestudiante")
+	private Estudiante estudiante;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "idproyecto", referencedColumnName = "idproyecto")
+	private Proyecto proyecto;
 
 	public Integra() {
 		super();
 	}
 
-	public Integra(Long idProyecto, Long idEstudiante, String formaParticipacion, Date anoParticipaEst) {
+	public Integra(String carrera,String formaParticipacion, Date anioParticipaEst, Estudiante estudiante, Proyecto proyecto) {
 		super();
-		this.idProyecto = idProyecto;
-		this.idEstudiante = idEstudiante;
+		this.carrera = carrera;
 		this.formaParticipacion = formaParticipacion;
-		this.anoParticipaEst = anoParticipaEst;
+		this.anioParticipaEst = anioParticipaEst;
+		this.estudiante = estudiante;
+		this.proyecto = proyecto;
 	}
 
 	public Long getIdIntegra() {
@@ -44,20 +53,12 @@ public class Integra {
 		this.idIntegra = idIntegra;
 	}
 
-	public Long getIdProyecto() {
-		return idProyecto;
+	public String getCarrera() {
+		return carrera;
 	}
 
-	public void setIdDocente(Long idProyecto) {
-		this.idProyecto = idProyecto;
-	}
-
-	public Long getIdEstudiante() {
-		return idEstudiante;
-	}
-
-	public void setIdEstudiante(Long idEstudiante) {
-		this.idEstudiante = idEstudiante;
+	public void setCarrera(String carrera) {
+		this.carrera = carrera;
 	}
 
 	public String getFormaParticipacion() {
@@ -68,11 +69,27 @@ public class Integra {
 		this.formaParticipacion = formaParticipacion;
 	}
 
-	public Date getAnoParticipaEst() {
-		return anoParticipaEst;
+	public Date getAnioParticipaEst() {
+		return anioParticipaEst;
 	}
 
-	public void setAnoParticipaEst(Date anoParticipaEst) {
-		this.anoParticipaEst = anoParticipaEst;
+	public void setAnioParticipaEst(Date anioParticipaEst) {
+		this.anioParticipaEst = anioParticipaEst;
+	}
+
+	public Estudiante getEstudiante() {
+		return estudiante;
+	}
+
+	public void setEstudiante(Estudiante estudiante) {
+		this.estudiante = estudiante;
+	}
+
+	public Proyecto getProyecto() {
+		return proyecto;
+	}
+
+	public void setProyecto(Proyecto proyecto) {
+		this.proyecto = proyecto;
 	}
 }

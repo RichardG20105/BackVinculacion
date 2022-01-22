@@ -1,7 +1,14 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Estudiante")
 public class Estudiante {
@@ -24,19 +31,24 @@ public class Estudiante {
 	
 	@Column(name = "sexoestudiante")
 	private String sexoEstudiante;
+	
+	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
+	private Set<Integra> integras;
 
 	public Estudiante() {
 		super();
 	}
 
 	public Estudiante(String cedulaEstudiante, String nombreEstudiante, String semestre, String sexoEstudiante,
-			Long idCarrera) {
+			Long idCarrera, Integra... integras) {
 		super();
 		this.cedulaEstudiante = cedulaEstudiante;
 		this.nombreEstudiante = nombreEstudiante;
 		this.semestre = semestre;
 		this.sexoEstudiante = sexoEstudiante;
 		this.idCarrera = idCarrera;
+		for(Integra integra: integras)integra.setEstudiante(this);
+		this.integras = Stream.of(integras).collect(Collectors.toSet());
 	}
 
 	public Long getIdEstudiante() {
@@ -86,4 +98,8 @@ public class Estudiante {
 	public void setIdCarrera(Long idCarrera) {
 		this.idCarrera = idCarrera;
 	}
+
+	public void setIntegras(Set<Integra> integras) {
+		this.integras = integras;
+	}	
 }

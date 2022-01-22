@@ -23,6 +23,12 @@ public class ControladorCarrera {
 	@Autowired
 	private RepositorioCarrera RepositorioCarrera;
 	
+	@GetMapping("{id}")
+	public Carrera getCarrera(@PathVariable(value = "id")Long idCarrera)throws ResourceNotFoundException{
+		Carrera carrera = RepositorioCarrera.findById(idCarrera)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe un carrera con ese ID"));
+		return carrera;
+	}
 	@GetMapping("ListarCarreras")
 	public List<Carrera> getCarreras()throws ResourceNotFoundException{
 		List<Carrera> Carreras = RepositorioCarrera.findAll();

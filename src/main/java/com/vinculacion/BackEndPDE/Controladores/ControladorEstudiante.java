@@ -42,6 +42,16 @@ public class ControladorEstudiante {
 		return estudiante;
 	}
 	
+	@GetMapping("Cedula/{cedula}")
+	public Estudiante getEstudianteCedula(@PathVariable(value = "cedula")String cedula)throws ResourceNotFoundException{
+		if(RepositorioEstudiante.existsByCedulaEstudiante(cedula)) {
+			Estudiante estudiante = RepositorioEstudiante.findByCedulaEstudiante(cedula);
+			return estudiante;
+		}else {
+			throw new ResourceNotFoundException("No existe un estudiante con ese número de cedula");
+		}
+	}
+	
 	@PostMapping("Registrar")
 	public Estudiante setEstudiante(@Valid @RequestBody Estudiante estudiante)throws ResourceNotFoundException{
 		if(RepositorioEstudiante.existsByCedulaEstudiante(estudiante.getCedulaEstudiante())) {
