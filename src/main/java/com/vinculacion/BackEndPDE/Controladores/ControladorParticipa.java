@@ -1,11 +1,14 @@
 package com.vinculacion.BackEndPDE.Controladores;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,5 +83,16 @@ public class ControladorParticipa {
 		participaAct.setHorasParticipacion(participa.getHorasParticipacion());
 		
 		return ResponseEntity.ok(this.RepositorioParticipa.save(participaAct));
+	}
+	
+	@DeleteMapping("Eliminar/{id}")
+	public Map<String, Boolean> deleteParticipa(@PathVariable(value = "id")Long IdParticipa)throws ResourceNotFoundException{
+		Participa participa = RepositorioParticipa.findById(IdParticipa)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe una participacion con ese ID"));
+		
+		this.RepositorioParticipa.delete(participa);
+		Map<String,Boolean> response = new HashMap<>();
+		response.put("El docente se elmino correctamente del proyecto", Boolean.TRUE);
+		return response;
 	}
 }

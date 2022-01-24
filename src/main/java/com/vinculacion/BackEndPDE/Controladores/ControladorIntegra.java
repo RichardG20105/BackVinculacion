@@ -81,7 +81,7 @@ public class ControladorIntegra {
 		
 		this.RepositorioIntegra.delete(integra);
 		Map<String, Boolean> response = new HashMap<>();
-		response.put("La relacion se elimino correctamente", Boolean.TRUE);
+		response.put("El estudiante se elimino correctamente del proyecto", Boolean.TRUE);
 		return response;
 	}
 }
