@@ -24,13 +24,20 @@ public class ControladorCertificado {
 	@Autowired
 	private RepositorioCertificado RepositorioCertificado;
 	
-	@GetMapping("ListarCertificados")
-	public List<Certificado> getCertificados(){
-		List<Certificado> Certificados = RepositorioCertificado.findAll();
-		
+	@GetMapping("ListarCertificadosIntegra")
+	public List<Certificado> getCertificadosIntegra()throws ResourceNotFoundException{
+		List<Certificado> Certificados = RepositorioCertificado.findAllByParticipaIsNull();
 		if(Certificados.isEmpty())
-			new ResourceNotFoundException("No existen Certificados almacenados.");
+			throw new ResourceNotFoundException("No existen certificados de Estudiantes");
 		return Certificados;
+	}
+	
+	@GetMapping("ListarCertificadosParticipa")
+	public List<Certificado> getCertificadosParticipa()throws ResourceNotFoundException {
+		List<Certificado> certificados = RepositorioCertificado.findAllByIntegraIsNull();
+		if(certificados.isEmpty())
+			throw new ResourceNotFoundException("No existen certificados de Docentes");
+		return certificados;
 	}
 	
 	@GetMapping("{id}")
@@ -42,7 +49,13 @@ public class ControladorCertificado {
 	
 	@PostMapping("Registrar")
 	public Certificado setCertificado(@Valid @RequestBody Certificado certificado)throws ResourceNotFoundException{
-		if(RepositorioCertificado.existsByIdProyectoAndCedulaIntegrante(certificado.getIdProyecto(),certificado.getCedulaIntegrante())) {
+		if(certificado.getParticipa() != null) {
+			if(RepositorioCertificado.existsByParticipa(certificado.getParticipa())){
+				throw new ResourceNotFoundException("Ya existe un certificado generado");
+			}
+			return this.RepositorioCertificado.save(certificado);
+		}
+		if(RepositorioCertificado.existsByIntegra(certificado.getIntegra())) {
 			throw new ResourceNotFoundException("Ya existe un certificado generado");
 		}
 		return this.RepositorioCertificado.save(certificado);

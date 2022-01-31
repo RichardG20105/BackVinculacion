@@ -1,7 +1,10 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.*;
 
@@ -35,13 +38,16 @@ public class Participa {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idproyecto", referencedColumnName = "idproyecto")
 	private Proyecto proyecto;
+	
+	@OneToMany(mappedBy = "participa", cascade = CascadeType.ALL)
+	private Set<Certificado> certificados = new HashSet<>();
 
 	public Participa() {
 		super();
 	}
 
 	public Participa(String facultad, String cargo, int horasParticipacion, Date anioParticipaDoc, Docente docente,
-			Proyecto proyecto) {
+			Proyecto proyecto, Certificado... certificados) {
 		super();
 		this.facultad = facultad;
 		this.cargo = cargo;
@@ -49,6 +55,8 @@ public class Participa {
 		this.anioParticipaDoc = anioParticipaDoc;
 		this.docente = docente;
 		this.proyecto = proyecto;
+		for(Certificado certificado: certificados) certificado.setParticipa(this);
+		this.certificados = Stream.of(certificados).collect(Collectors.toSet());
 	}
 
 	public Long getIdParticipa() {
@@ -106,5 +114,8 @@ public class Participa {
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
 	}
-	
+
+	public void setCertificados(Set<Certificado> certificados) {
+		this.certificados = certificados;
+	}
 }

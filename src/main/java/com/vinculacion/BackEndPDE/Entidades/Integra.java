@@ -1,6 +1,10 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.persistence.*;
 
@@ -31,18 +35,24 @@ public class Integra {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idproyecto", referencedColumnName = "idproyecto")
 	private Proyecto proyecto;
+	
+	@OneToMany(mappedBy = "integra", cascade = CascadeType.ALL)
+	private Set<Certificado> certificados = new HashSet<>();
 
 	public Integra() {
 		super();
 	}
 
-	public Integra(String carrera,String formaParticipacion, Date anioParticipaEst, Estudiante estudiante, Proyecto proyecto) {
+	public Integra(String carrera,String formaParticipacion, Date anioParticipaEst, Estudiante estudiante, Proyecto proyecto,
+			Certificado... certificados) {
 		super();
 		this.carrera = carrera;
 		this.formaParticipacion = formaParticipacion;
 		this.anioParticipaEst = anioParticipaEst;
 		this.estudiante = estudiante;
 		this.proyecto = proyecto;
+		for(Certificado certificado: certificados) certificado.setIntegra(this);
+		this.certificados = Stream.of(certificados).collect(Collectors.toSet());
 	}
 
 	public Long getIdIntegra() {
@@ -91,5 +101,9 @@ public class Integra {
 
 	public void setProyecto(Proyecto proyecto) {
 		this.proyecto = proyecto;
+	}
+
+	public void setCertificados(Set<Certificado> certificados) {
+		this.certificados = certificados;
 	}
 }

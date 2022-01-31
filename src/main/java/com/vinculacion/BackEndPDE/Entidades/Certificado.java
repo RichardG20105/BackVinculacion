@@ -1,9 +1,12 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 @Table(name = "Certificado")
 public class Certificado {
@@ -11,12 +14,6 @@ public class Certificado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idcertificado")
 	private Long idCertificado;
-	
-	@Column(name = "idproyecto")
-	private Long idProyecto;
-	
-	@Column(name = "cedulaintegrante")
-	private String cedulaIntegrante;
 	
 	@Column(name = "fechaentrega")
 	private Date fechaEntrega;
@@ -26,19 +23,27 @@ public class Certificado {
 	
 	@Column(name = "observacioncertificado")
 	private String observacionCertificado;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "idparticipa", referencedColumnName = "idparticipa")
+	private Participa participa;
+	
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "idintegra", referencedColumnName = "idintegra")
+	private Integra integra;
 
 	public Certificado() {
 		super();
 	}
 
-	public Certificado(Long idProyecto, String cedulaIntegrante, Date fechaEntrega, Date fechaRecepcion,
-			String observacionCertificado) {
+	public Certificado(Date fechaEntrega, Date fechaRecepcion, String observacionCertificado,
+			Participa participa, Integra integra) {
 		super();
-		this.idProyecto = idProyecto;
-		this.cedulaIntegrante = cedulaIntegrante;
 		this.fechaEntrega = fechaEntrega;
 		this.fechaRecepcion = fechaRecepcion;
 		this.observacionCertificado = observacionCertificado;
+		this.participa = participa;
+		this.integra = integra;
 	}
 
 	public Long getIdCertificado() {
@@ -47,22 +52,6 @@ public class Certificado {
 
 	public void setIdCertificado(Long idCertificado) {
 		this.idCertificado = idCertificado;
-	}
-
-	public Long getIdProyecto() {
-		return idProyecto;
-	}
-
-	public void setIdProyecto(Long idProyecto) {
-		this.idProyecto = idProyecto;
-	}
-
-	public String getCedulaIntegrante() {
-		return cedulaIntegrante;
-	}
-
-	public void setCedulaIntegrante(String cedulaIntegrante) {
-		this.cedulaIntegrante = cedulaIntegrante;
 	}
 
 	public Date getFechaEntrega() {
@@ -87,5 +76,21 @@ public class Certificado {
 
 	public void setObservacionCertificado(String observacionCertificado) {
 		this.observacionCertificado = observacionCertificado;
+	}
+
+	public Participa getParticipa() {
+		return participa;
+	}
+
+	public void setParticipa(Participa participa) {
+		this.participa = participa;
+	}
+
+	public Integra getIntegra() {
+		return integra;
+	}
+
+	public void setIntegra(Integra integra) {
+		this.integra = integra;
 	}
 }
