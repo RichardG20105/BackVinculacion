@@ -11,4 +11,5 @@ import com.vinculacion.BackEndPDE.Entidades.Proyecto;
 @Repository
 public interface RepositorioIntegra extends JpaRepository<Integra, Long>{
 	List<Integra> findAllByProyecto(Proyecto proyecto);
+	List<Integra> findEstudianteByEstudiante_idCarreraBetween(Long id1, Long id2);
 }

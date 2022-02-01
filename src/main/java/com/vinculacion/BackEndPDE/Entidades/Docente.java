@@ -4,7 +4,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,36 +23,36 @@ public class Docente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "iddocente")
 	private Long idDocente;
-	
+
 	@Column(name = "idcarrera")
 	private Long idCarrera;
-	
+
 	@Column(name = "ceduladocente")
 	private String cedulaDocente;
-	
+
 	@Column(name = "nombredocente")
 	private String nombreDocente;
-	
+
 	@Column(name = "contacto")
 	private String contacto;
-	
+
 	@Column(name = "correoelectronico")
 	private String correoElectronico;
-	
+
 	@Column(name = "relacionlaboral")
 	private String relacionLaboral;
-	
+
 	@Column(name = "sexodocente")
 	private String sexoDocente;
-	
+
 	@OneToMany(mappedBy="docente", cascade = CascadeType.ALL)
 	private Set<Participa> participas;
-	
-	
+
+
 	public Docente() {
 		super();
 	}
-	
+
 	public Docente(String cedulaDocente, String nombreDocente, String contacto, String correoElectronico,
 			String relacionLaboral, String sexoDocente, Long idCarrera, Participa... participas) {
 		super();

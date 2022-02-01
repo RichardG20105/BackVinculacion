@@ -1,6 +1,11 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Facultad")
@@ -10,10 +15,10 @@ public class Facultad {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idfacultad")
 	private Long idFacultad;
-	
+
 	@Column(name = "nombrefacultad")
 	private String nombreFacultad;
-	
+
 	public Facultad() {
 		super();
 	}

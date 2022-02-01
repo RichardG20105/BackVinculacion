@@ -2,7 +2,15 @@ package com.vinculacion.BackEndPDE.Entidades;
 
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,20 +22,23 @@ public class Certificado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idcertificado")
 	private Long idCertificado;
-	
+
 	@Column(name = "fechaentrega")
 	private Date fechaEntrega;
-	
+
 	@Column(name = "fecharecepcion")
 	private Date fechaRecepcion;
-	
+
+	@Column(name = "facultadintegrante")
+	private String facultadIntegrante;
+
 	@Column(name = "observacioncertificado")
 	private String observacionCertificado;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "idparticipa", referencedColumnName = "idparticipa")
 	private Participa participa;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "idintegra", referencedColumnName = "idintegra")
 	private Integra integra;
@@ -36,11 +47,12 @@ public class Certificado {
 		super();
 	}
 
-	public Certificado(Date fechaEntrega, Date fechaRecepcion, String observacionCertificado,
+	public Certificado(Date fechaEntrega, Date fechaRecepcion, String facultadIntegrante,String observacionCertificado,
 			Participa participa, Integra integra) {
 		super();
 		this.fechaEntrega = fechaEntrega;
 		this.fechaRecepcion = fechaRecepcion;
+		this.facultadIntegrante = facultadIntegrante;
 		this.observacionCertificado = observacionCertificado;
 		this.participa = participa;
 		this.integra = integra;
@@ -68,6 +80,14 @@ public class Certificado {
 
 	public void setFechaRecepcion(Date fechaRecepcion) {
 		this.fechaRecepcion = fechaRecepcion;
+	}
+
+	public String getFacultadIntegrante() {
+		return facultadIntegrante;
+	}
+
+	public void setFacultadIntegrante(String facultadIntegrante) {
+		this.facultadIntegrante = facultadIntegrante;
 	}
 
 	public String getObservacionCertificado() {

@@ -22,16 +22,16 @@ import com.vinculacion.BackEndPDE.Repositorio.RepositorioProyecto;
 public class ControladorProyecto {
 	@Autowired
 	private RepositorioProyecto RepositorioProyecto;
-	
+
 	@GetMapping("ListarProyectos")
 	public List<Proyecto> getProyectos(){
 		List<Proyecto> Proyectos = RepositorioProyecto.findAllByOrderByIdProyectoDesc();
-		
+
 		if(Proyectos.isEmpty())
 			new ResourceNotFoundException("No se encontraron Proyectos almacenados");
 		return Proyectos;
 	}
-	
+
 	@GetMapping("{id}")
 	public Proyecto getProyecto(@PathVariable(value = "id")Long idProyecto)throws ResourceNotFoundException{
 		Proyecto proyecto = RepositorioProyecto.findById(idProyecto)
@@ -45,7 +45,7 @@ public class ControladorProyecto {
 		}
 		return this.RepositorioProyecto.save(proyecto);
 	}
-	
+
 	@PutMapping("Actualizar/{id}")
 	public ResponseEntity<Proyecto> putProyecto(@PathVariable(value = "id")Long IDProyecto,@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
 		Proyecto proyectoAct = RepositorioProyecto.findById(IDProyecto)
@@ -56,11 +56,11 @@ public class ControladorProyecto {
 				throw new ResourceNotFoundException("Ya existe proyecto con ese codigo");
 			}
 		}
-		
+
 		proyectoAct.setCodigo(proyecto.getCodigo());
 		proyectoAct.setNombreProyecto(proyecto.getNombreProyecto());
 		proyectoAct.setResolucion(proyecto.getResolucion());
-		
+
 		return ResponseEntity.ok(this.RepositorioProyecto.save(proyectoAct));
 	}
 }

@@ -22,7 +22,8 @@ import com.vinculacion.BackEndPDE.Repositorio.RepositorioCarrera;
 public class ControladorCarrera {
 	@Autowired
 	private RepositorioCarrera RepositorioCarrera;
-	
+
+
 	@GetMapping("{id}")
 	public Carrera getCarrera(@PathVariable(value = "id")Long idCarrera)throws ResourceNotFoundException{
 		Carrera carrera = RepositorioCarrera.findById(idCarrera)
@@ -32,13 +33,13 @@ public class ControladorCarrera {
 	@GetMapping("ListarCarreras")
 	public List<Carrera> getCarreras()throws ResourceNotFoundException{
 		List<Carrera> Carreras = RepositorioCarrera.findAll();
-		
+
 		if(Carreras.isEmpty()) {
 			throw new ResourceNotFoundException("No existen carreras almacenadas");
 		}
 		return Carreras;
 	}
-	
+
 	@GetMapping("ListarCarrerasFacultad/{id}")
 	public List<Carrera> getCarrerasFacultad(@PathVariable(value = "id")Long IDFacultad)throws ResourceNotFoundException{
 		List<Carrera> Carreras = RepositorioCarrera.findAllByIdFacultad(IDFacultad);
@@ -47,14 +48,14 @@ public class ControladorCarrera {
 		}
 		return Carreras;
 	}
-	
+
 	@GetMapping("Facultad/{id}")
 	public Long getCarreraFacultad(@PathVariable(value = "id")Long IDCarrera)throws ResourceNotFoundException{
 		Carrera carrera = RepositorioCarrera.findById(IDCarrera)
 				.orElseThrow(() -> new ResourceNotFoundException("No se encontro la carrera con ese ID"));
 		return carrera.getIdFacultad();
 	}
-	
+
 	@PostMapping("Registrar")
 	public Carrera registrarCarrera(@Valid @RequestBody Carrera carrera)throws ResourceNotFoundException {
 		if(RepositorioCarrera.existsByNombreCarrera(carrera.getNombreCarrera())) {
@@ -62,7 +63,7 @@ public class ControladorCarrera {
 		}
 		return this.RepositorioCarrera.save(carrera);
 	}
-	
+
 	@PutMapping("Actualizar/{id}")
 	public ResponseEntity<Carrera> putCarrera(@PathVariable(value = "id")Long IDCarrera, @Valid @RequestBody Carrera carrera)throws ResourceNotFoundException{
 		Carrera carreraAct = RepositorioCarrera.findById(IDCarrera)
@@ -70,9 +71,9 @@ public class ControladorCarrera {
 		if(RepositorioCarrera.existsByNombreCarrera(carrera.getNombreCarrera())) {
 			throw new ResourceNotFoundException("Ya existe una Carrera con ese Nombre");
 		}
-		
+
 		carreraAct.setNombreCarrera(carrera.getNombreCarrera());
-		
+
 		return ResponseEntity.ok(this.RepositorioCarrera.save(carreraAct));
 	}
 }

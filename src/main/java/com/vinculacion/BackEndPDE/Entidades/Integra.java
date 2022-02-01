@@ -6,7 +6,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,24 +28,24 @@ public class Integra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idintegra")
 	private Long idIntegra;
-	
+
 	@Column(name="carrera")
 	private String carrera;
-	
+
 	@Column(name = "formaparticipacion")
 	private String formaParticipacion;
-	
+
 	@Column(name = "anioparticipaest")
 	private Date anioParticipaEst;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idestudiante",referencedColumnName="idestudiante")
 	private Estudiante estudiante;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idproyecto", referencedColumnName = "idproyecto")
 	private Proyecto proyecto;
-	
+
 	@OneToMany(mappedBy = "integra", cascade = CascadeType.ALL)
 	private Set<Certificado> certificados = new HashSet<>();
 

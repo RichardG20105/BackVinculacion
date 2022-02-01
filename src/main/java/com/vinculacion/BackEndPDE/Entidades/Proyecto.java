@@ -3,7 +3,14 @@ package com.vinculacion.BackEndPDE.Entidades;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,22 +22,22 @@ public class Proyecto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idproyecto")
 	private Long idProyecto;
-	
+
 	@Column(name = "codigo")
 	private String codigo;
-	
+
 	@Column(name = "nombreproyecto")
 	private String nombreProyecto;
-	
+
 	@Column(name = "resolucion")
 	private String resolucion;
-	
+
 	@OneToMany(mappedBy = "proyecto", cascade = CascadeType.ALL)
 	private Set<Participa> participas = new HashSet<>();
-	
+
 	@OneToMany(mappedBy="proyecto", cascade = CascadeType.ALL)
 	private Set<Integra> integras = new HashSet<>();
-	
+
 	public Proyecto() {
 		super();
 	}

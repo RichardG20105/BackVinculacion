@@ -1,6 +1,11 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "Carrera")
@@ -9,13 +14,13 @@ public class Carrera {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idcarrera")
 	private Long idCarrera;
-	
+
 	@Column(name = "idfacultad")
 	private Long idFacultad;
-	
+
 	@Column(name = "nombrecarrera")
 	private String nombreCarrera;
-	
+
 	public Carrera() {
 		super();
 	}

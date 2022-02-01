@@ -4,7 +4,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,22 +23,22 @@ public class Estudiante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "idestudiante")
 	private Long idEstudiante;
-	
+
 	@Column(name = "idcarrera")
 	private Long idCarrera;
-	
+
 	@Column(name = "cedulaestudiante")
 	private String cedulaEstudiante;
-	
+
 	@Column(name = "nombreestudiante")
 	private String nombreEstudiante;
-	
+
 	@Column(name = "semestre")
 	private String semestre;
-	
+
 	@Column(name = "sexoestudiante")
 	private String sexoEstudiante;
-	
+
 	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL)
 	private Set<Integra> integras;
 
@@ -101,5 +108,5 @@ public class Estudiante {
 
 	public void setIntegras(Set<Integra> integras) {
 		this.integras = integras;
-	}	
+	}
 }

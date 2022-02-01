@@ -25,7 +25,7 @@ import com.vinculacion.BackEndPDE.Repositorio.RepositorioDocente;
 public class ControladorDocente {
 	@Autowired
 	private RepositorioDocente RepositorioDocente;
-	
+
 	@GetMapping("ListarDocentes")
 	public List<Docente> getDocentes()throws ResourceNotFoundException{
 		List<Docente> Docentes = RepositorioDocente.findAllByOrderByIdDocenteDesc();
@@ -33,24 +33,24 @@ public class ControladorDocente {
 			new ResourceNotFoundException("No existen Docentes ingresados");
 		return Docentes;
 	}
-	
+
 	@GetMapping("{id}")
 	public Docente getDocente(@PathVariable(value = "id")Long IDDocente)throws ResourceNotFoundException{
 		Docente docente = RepositorioDocente.findById(IDDocente)
 				.orElseThrow(() -> new ResourceNotFoundException("No se encontro el Docente con ese ID"));
 		return docente;
 	}
-	
+
 	@GetMapping("Cedula/{cedula}")
 	public Docente getDocenteCedula(@PathVariable(value="cedula")String cedula)throws ResourceNotFoundException{
 		if(RepositorioDocente.existsByCedulaDocente(cedula)) {
 			Docente docente = RepositorioDocente.findByCedulaDocente(cedula);
-			return docente;		
+			return docente;
 		}else {
 			throw new ResourceNotFoundException("No existen un docente con ese número de cedula");
-		}		
+		}
 	}
-	
+
 	@PostMapping("Registrar")
 	public Docente setDocente(@Valid @RequestBody Docente docente)throws ResourceNotFoundException{
 		if(RepositorioDocente.existsByCedulaDocente(docente.getCedulaDocente())) {
@@ -58,7 +58,7 @@ public class ControladorDocente {
 		}
 		return this.RepositorioDocente.save(docente);
 	}
-	
+
 	@PutMapping("Actualizar/{id}")
 	public ResponseEntity<Docente> putDocente(@PathVariable(value = "id")Long IDDocente,@Valid @RequestBody Docente docente)throws ResourceNotFoundException{
 		Docente docenteAct = RepositorioDocente.findById(IDDocente)
@@ -69,7 +69,7 @@ public class ControladorDocente {
 				throw new ResourceNotFoundException("Ya existe un docente con esa Cedula");
 			}
 		}
-		
+
 		docenteAct.setIdCarrera(docente.getIdCarrera());
 		docenteAct.setNombreDocente(docente.getNombreDocente());
 		docenteAct.setCedulaDocente(docente.getCedulaDocente());
@@ -77,15 +77,15 @@ public class ControladorDocente {
 		docenteAct.setCorreoElectronico(docente.getCorreoElectronico());
 		docenteAct.setSexoDocente(docente.getSexoDocente());
 		docenteAct.setRelacionLaboral(docente.getRelacionLaboral());
-		
+
 		return ResponseEntity.ok(this.RepositorioDocente.save(docenteAct));
 	}
-	
+
 	@DeleteMapping("Eliminar/{id}")
 	public Map<String, Boolean> deleteDocente(@PathVariable(value = "id")Long IDDocente)throws ResourceNotFoundException{
 		Docente docente = RepositorioDocente.findById(IDDocente)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el docente con ese ID"));
-		
+
 		this.RepositorioDocente.delete(docente);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("El docente se elimino correctamente", Boolean.TRUE);

@@ -22,7 +22,7 @@ import com.vinculacion.BackEndPDE.Repositorio.RepositorioFacultad;
 public class ControladorFacultad {
 	@Autowired
 	private RepositorioFacultad RepositorioFacultad;
-	
+
 	@GetMapping("ListarFacultades")
 	public List<Facultad> getFacultades(){
 		List<Facultad> Facultades= RepositorioFacultad.findAll();
@@ -31,14 +31,14 @@ public class ControladorFacultad {
 			new ResourceNotFoundException("No existen registros almacenados");
 		return Facultades;
 	}
-	
+
 	@GetMapping("{id}")
 	public Facultad getFacultad(@PathVariable(value = "id")Long IDFacultad)throws ResourceNotFoundException {
 		Facultad facu = RepositorioFacultad.findById(IDFacultad)
 				.orElseThrow(() -> new ResourceNotFoundException("No se encontro la Facultad con ese ID"));
 		return facu;
 	}
-	
+
 	@PostMapping("Registrar")
 	public Facultad setFacultad(@Valid @RequestBody Facultad facultad)throws ResourceNotFoundException{
 		if(RepositorioFacultad.existsByNombreFacultad(facultad.getNombreFacultad())) {
@@ -46,21 +46,21 @@ public class ControladorFacultad {
 		}
 		return this.RepositorioFacultad.save(facultad);
 	}
-	
+
 	@PutMapping("Actualizar/{id}")
 	public ResponseEntity<Facultad> putFacultad(@PathVariable(value = "id")Long IDFacultad,@Valid @RequestBody Facultad facultad)throws ResourceNotFoundException{
 		Facultad facultadAct = RepositorioFacultad.findById(IDFacultad)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe una facultad con ese ID"));
-		
+
 		if(RepositorioFacultad.existsByNombreFacultad(facultad.getNombreFacultad())){
 			Facultad facultadComp = RepositorioFacultad.findByNombreFacultad(facultad.getNombreFacultad());
 			if(facultadComp.getIdFacultad() != IDFacultad) {
 				throw new ResourceNotFoundException("Ya existe una facultad con ese nombre");
 			}
 		}
-		
+
 		facultadAct.setNombreFacultad(facultad.getNombreFacultad());
-		
+
 		return ResponseEntity.ok(this.RepositorioFacultad.save(facultadAct));
 	}
 }

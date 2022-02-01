@@ -15,7 +15,7 @@ public class BackEndPdeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackEndPdeApplication.class, args);
 	}
-	
+
 	@Bean
 	public CorsFilter corsFilter() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
