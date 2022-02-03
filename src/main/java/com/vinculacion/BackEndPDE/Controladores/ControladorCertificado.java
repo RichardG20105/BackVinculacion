@@ -45,7 +45,7 @@ public class ControladorCertificado {
 		List<Certificado> certificados = RepositorioCertificado.findAllByIntegraIsNullAndFacultadIntegrante(Facultad);
 
 		if(certificados.isEmpty())
-			throw new ResourceNotFoundException("No existen certificados de esa facultad");
+			throw new ResourceNotFoundException("No existen certificados de Docentes de esa facultad");
 		return certificados;
 	}
 
@@ -54,7 +54,7 @@ public class ControladorCertificado {
 		List<Certificado> certificados = RepositorioCertificado.findAllByParticipaIsNullAndFacultadIntegrante(Facultad);
 
 		if(certificados.isEmpty())
-			throw new ResourceNotFoundException("No existen certificados de esa facultad");
+			throw new ResourceNotFoundException("No existen certificados de Estudiantes de esa facultad");
 		return certificados;
 	}
 
@@ -65,12 +65,21 @@ public class ControladorCertificado {
 		return certificado;
 	}
 
-	@GetMapping("Listado/{observacion}")
-	public List<Certificado> getCertificadosObservacion(@PathVariable(value = "observacion")String Observacion)throws ResourceNotFoundException{
-		List<Certificado> certificados = RepositorioCertificado.findAllByObservacionCertificado(Observacion);
+	@GetMapping("ListadoCertificadoDocente/{observacion}")
+	public List<Certificado> getCertificadosDocenteObservacion(@PathVariable(value = "observacion")String Observacion)throws ResourceNotFoundException{
+		List<Certificado> certificados = RepositorioCertificado.findAllByIntegraIsNullAndObservacionCertificado(Observacion);
 
 		if(certificados.isEmpty())
-			throw new ResourceNotFoundException("No existen certificados con es observacion");
+			throw new ResourceNotFoundException("No existen certificados de Docentes con es observacion");
+		return certificados;
+	}
+	
+	@GetMapping("ListadoCertificadoEstudiante/{observacion}")
+	public List<Certificado> getCertificadosEstudianteObservacion(@PathVariable(value = "observacion")String Observacion)throws ResourceNotFoundException{
+		List<Certificado> certificados = RepositorioCertificado.findAllByParticipaIsNullAndObservacionCertificado(Observacion);
+
+		if(certificados.isEmpty())
+			throw new ResourceNotFoundException("No existen certificados de Estudiantes con es observacion");
 		return certificados;
 	}
 

@@ -15,7 +15,9 @@ public interface RepositorioCertificado extends JpaRepository<Certificado, Long>
 	Boolean existsByIntegra(Integra integra);
 	List<Certificado> findAllByIntegraIsNull();
 	List<Certificado> findAllByParticipaIsNull();
-	List<Certificado> findAllByObservacionCertificado(String observacionCertificado);
+	List<Certificado> findAllByIntegraIsNullAndObservacionCertificado(String observacionCertificado);
 	List<Certificado> findAllByIntegraIsNullAndFacultadIntegrante(String facultad);
+
 	List<Certificado> findAllByParticipaIsNullAndFacultadIntegrante(String facultad);
+	List<Certificado> findAllByParticipaIsNullAndObservacionCertificado(String observacionCertificado);
 }
