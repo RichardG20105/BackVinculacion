@@ -1,13 +1,16 @@
 package com.vinculacion.BackEndPDE.Controladores;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -112,7 +115,7 @@ public class ControladorCertificado {
 			throw new ResourceNotFoundException("Ya existe un certificado generado");
 		}
 		
-		if(certificado.getIntegra().getFormaParticipacion() == null) {
+		if(certificado.getIntegra().getFormaParticipacion() == "") {
 			throw new ResourceNotFoundException("Se necesita definir la Forma de Participacion del Estudiante");
 		}
 		
@@ -141,5 +144,17 @@ public class ControladorCertificado {
 		certificadoAct.setObservacionCertificado(certificado.getObservacionCertificado());
 
 		return ResponseEntity.ok(this.RepositorioCertificado.save(certificadoAct));
+	}
+	
+	@DeleteMapping("Eliminar/{id}")
+	public Map<String,Boolean> deleteCertificado(@PathVariable(value = "id")Long idCertificado)throws ResourceNotFoundException{
+		Certificado certificado = RepositorioCertificado.findById(idCertificado)
+				.orElseThrow(() -> new ResourceNotFoundException("No se encontro el certificado con ese ID"));
+		
+		this.RepositorioCertificado.delete(certificado);
+		
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("El certificado se elimino", Boolean.TRUE);
+		return response;
 	}
 }
