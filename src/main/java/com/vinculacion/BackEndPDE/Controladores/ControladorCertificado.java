@@ -1,6 +1,8 @@
 package com.vinculacion.BackEndPDE.Controladores;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.validation.Valid;
 
@@ -85,16 +87,48 @@ public class ControladorCertificado {
 
 	@PostMapping("Registrar")
 	public Certificado setCertificado(@Valid @RequestBody Certificado certificado)throws ResourceNotFoundException{
+		Calendar fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"));
+		fecha.add(Calendar.DATE, 0);
+		
+		String Codigo;
+		
 		if(certificado.getParticipa() != null) {
 			if(RepositorioCertificado.existsByParticipa(certificado.getParticipa())){
 				throw new ResourceNotFoundException("Ya existe un certificado generado");
 			}
+			
+			if(certificado.getParticipa().getAnioParticipaDoc() == null) {
+				throw new ResourceNotFoundException("Se necesita deifinir las fechas de Participación del Docente");
+			} 
+			
+			Codigo = "DV-" + certificado.getParticipa().getDocente().getIdDocente() + certificado.getParticipa().getIdParticipa() + 
+					fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);;
+			
+			certificado.setCodigoCertificado(Codigo);
 			return this.RepositorioCertificado.save(certificado);
 		}
+		
 		if(RepositorioCertificado.existsByIntegra(certificado.getIntegra())) {
 			throw new ResourceNotFoundException("Ya existe un certificado generado");
 		}
+		
+		if(certificado.getIntegra().getFormaParticipacion() == null) {
+			throw new ResourceNotFoundException("Se necesita definir la Forma de Participacion del Estudiante");
+		}
+		
+		Codigo = "DV-" + certificado.getIntegra().getEstudiante().getIdEstudiante() + certificado.getIntegra().getIdIntegra() + 
+				fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);
+		
+		certificado.setCodigoCertificado(Codigo);
 		return this.RepositorioCertificado.save(certificado);
+	}
+	
+	@GetMapping("ValidarCertificado/{codigo}")
+	public Certificado getCertificado(@PathVariable(value = "codigo") String codigo)throws ResourceNotFoundException{
+		Certificado certificado = RepositorioCertificado.findByCodigoCertificado(codigo)
+				.orElseThrow(() -> new ResourceNotFoundException("No existe un certificado con ese codigo"));
+		
+		return certificado;
 	}
 
 	@PutMapping("Actualizar/{id}")

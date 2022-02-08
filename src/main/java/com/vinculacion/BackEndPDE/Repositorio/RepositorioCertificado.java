@@ -1,6 +1,7 @@
 package com.vinculacion.BackEndPDE.Repositorio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,6 @@ public interface RepositorioCertificado extends JpaRepository<Certificado, Long>
 
 	List<Certificado> findAllByParticipaIsNullAndFacultadIntegrante(String facultad);
 	List<Certificado> findAllByParticipaIsNullAndObservacionCertificado(String observacionCertificado);
+	
+	Optional<Certificado> findByCodigoCertificado(String codigoCertificado);
 }

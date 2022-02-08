@@ -34,6 +34,9 @@ public class Certificado {
 
 	@Column(name = "observacioncertificado")
 	private String observacionCertificado;
+	
+	@Column(name = "codigocertificado")
+	private String codigoCertificado;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "idparticipa", referencedColumnName = "idparticipa")
@@ -47,13 +50,14 @@ public class Certificado {
 		super();
 	}
 
-	public Certificado(Date fechaEntrega, Date fechaRecepcion, String facultadIntegrante,String observacionCertificado,
-			Participa participa, Integra integra) {
+	public Certificado(Date fechaEntrega, Date fechaRecepcion, String facultadIntegrante, String observacionCertificado,
+			String codigoCertificado, Participa participa, Integra integra) {
 		super();
 		this.fechaEntrega = fechaEntrega;
 		this.fechaRecepcion = fechaRecepcion;
 		this.facultadIntegrante = facultadIntegrante;
 		this.observacionCertificado = observacionCertificado;
+		this.codigoCertificado = codigoCertificado;
 		this.participa = participa;
 		this.integra = integra;
 	}
@@ -96,6 +100,14 @@ public class Certificado {
 
 	public void setObservacionCertificado(String observacionCertificado) {
 		this.observacionCertificado = observacionCertificado;
+	}
+	
+	public String getCodigoCertificado() {
+		return codigoCertificado;
+	}
+
+	public void setCodigoCertificado(String codigoCertificado) {
+		this.codigoCertificado = codigoCertificado;
 	}
 
 	public Participa getParticipa() {

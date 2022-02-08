@@ -84,12 +84,33 @@ public class ControladorParticipa {
 	public ResponseEntity<Participa> putParticipa(@PathVariable(value = "id")Long IDParticipa,@Valid @RequestBody Participa participa)throws ResourceNotFoundException{
 		Participa participaAct = RepositorioParticipa.findById(IDParticipa)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe una participacion con este ID"));
+		
 		SimpleDateFormat getAnio = new SimpleDateFormat("yyyy");
 		int anio = Integer.parseInt(getAnio.format(participa.getAnioParticipaDoc()));
-		List<Participa> participaciones = RepositorioParticipa.findAllByDocenteAnioParticipa(participa.getProyecto().getIdProyecto(),participa.getDocente().getIdDocente(),anio);
+		int totalHoras = participa.getHorasParticipacion();
+		boolean mismo = false;
+		
+		List<Participa> participaciones = RepositorioParticipa.findAllByDocenteAnioParticipa(participa.getDocente().getIdDocente(),anio);
+		
 		if(participaciones.size() > 1) {
-			throw new ResourceNotFoundException("El docente ya se encuentra en 2 proyectos");
+			for(Participa partici: participaciones) {
+				if(partici.getIdParticipa() == participa.getIdParticipa())
+					mismo = true;
+			}
+			if(!mismo)
+				throw new ResourceNotFoundException("El docente ya se encuentra en 2 proyectos");
 		}
+		if(participaciones.size() == 2) {
+			for(Participa participacion: participaciones) {
+				if(participacion.getIdParticipa() != participa.getIdParticipa()) 
+					totalHoras += participacion.getHorasParticipacion();
+			}
+		}
+		
+		if(totalHoras > 4) {
+			throw new ResourceNotFoundException("El docente excede el maximo de horas permitidas");
+		}
+		
 		participaAct.setAnioParticipaDoc(participa.getAnioParticipaDoc());
 		participaAct.setHorasParticipacion(participa.getHorasParticipacion());
 
