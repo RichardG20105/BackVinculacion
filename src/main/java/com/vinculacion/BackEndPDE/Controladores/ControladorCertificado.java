@@ -78,7 +78,7 @@ public class ControladorCertificado {
 			throw new ResourceNotFoundException("No existen certificados de Docentes con es observacion");
 		return certificados;
 	}
-	
+
 	@GetMapping("ListadoCertificadoEstudiante/{observacion}")
 	public List<Certificado> getCertificadosEstudianteObservacion(@PathVariable(value = "observacion")String Observacion)throws ResourceNotFoundException{
 		List<Certificado> certificados = RepositorioCertificado.findAllByParticipaIsNullAndObservacionCertificado(Observacion);
@@ -92,45 +92,49 @@ public class ControladorCertificado {
 	public Certificado setCertificado(@Valid @RequestBody Certificado certificado)throws ResourceNotFoundException{
 		Calendar fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"));
 		fecha.add(Calendar.DATE, 0);
-		
+
 		String Codigo;
-		
+
 		if(certificado.getParticipa() != null) {
 			if(RepositorioCertificado.existsByParticipa(certificado.getParticipa())){
 				throw new ResourceNotFoundException("Ya existe un certificado generado");
 			}
-			
-			if(certificado.getParticipa().getAnioParticipaDoc() == null) {
+
+			if(certificado.getParticipa().getParticipacionInicio() == null || certificado.getParticipa().getParticipacionFinal() == null) {
 				throw new ResourceNotFoundException("Se necesita deifinir las fechas de Participación del Docente");
-			} 
-			
-			Codigo = "DV-" + certificado.getParticipa().getDocente().getIdDocente() + certificado.getParticipa().getIdParticipa() + 
-					fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);;
-			
+			}
+
+			Codigo = "DV-" + certificado.getParticipa().getDocente().getIdDocente() + certificado.getParticipa().getIdParticipa() +
+					fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);
+
 			certificado.setCodigoCertificado(Codigo);
 			return this.RepositorioCertificado.save(certificado);
 		}
-		
+
 		if(RepositorioCertificado.existsByIntegra(certificado.getIntegra())) {
 			throw new ResourceNotFoundException("Ya existe un certificado generado");
 		}
-		
+
+		if(certificado.getIntegra().getIntegraInicio() == null || certificado.getIntegra().getIntegraFinal() == null) {
+			throw new ResourceNotFoundException("Se neceistan definir las fechas de Participacion del Estudiante");
+		}
+
 		if(certificado.getIntegra().getFormaParticipacion() == "") {
 			throw new ResourceNotFoundException("Se necesita definir la Forma de Participacion del Estudiante");
 		}
-		
-		Codigo = "DV-" + certificado.getIntegra().getEstudiante().getIdEstudiante() + certificado.getIntegra().getIdIntegra() + 
+
+		Codigo = "DV-" + certificado.getIntegra().getEstudiante().getIdEstudiante() + certificado.getIntegra().getIdIntegra() +
 				fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);
-		
+
 		certificado.setCodigoCertificado(Codigo);
 		return this.RepositorioCertificado.save(certificado);
 	}
-	
+
 	@GetMapping("ValidarCertificado/{codigo}")
 	public Certificado getCertificado(@PathVariable(value = "codigo") String codigo)throws ResourceNotFoundException{
 		Certificado certificado = RepositorioCertificado.findByCodigoCertificado(codigo)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe un certificado con ese codigo"));
-		
+
 		return certificado;
 	}
 
@@ -145,14 +149,14 @@ public class ControladorCertificado {
 
 		return ResponseEntity.ok(this.RepositorioCertificado.save(certificadoAct));
 	}
-	
+
 	@DeleteMapping("Eliminar/{id}")
 	public Map<String,Boolean> deleteCertificado(@PathVariable(value = "id")Long idCertificado)throws ResourceNotFoundException{
 		Certificado certificado = RepositorioCertificado.findById(idCertificado)
 				.orElseThrow(() -> new ResourceNotFoundException("No se encontro el certificado con ese ID"));
-		
+
 		this.RepositorioCertificado.delete(certificado);
-		
+
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("El certificado se elimino", Boolean.TRUE);
 		return response;

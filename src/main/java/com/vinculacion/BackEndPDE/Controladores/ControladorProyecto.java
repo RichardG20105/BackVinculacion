@@ -32,12 +32,45 @@ public class ControladorProyecto {
 		return Proyectos;
 	}
 
+	@GetMapping("Listado/Facultad/{facultad}")
+	public List<Proyecto> getProyectosFacultad(@PathVariable(name = "facultad")String Facultad)throws ResourceNotFoundException{
+		List<Proyecto> proyectos = RepositorioProyecto.findAllByFacultad_nombreFacultad(Facultad);
+		if(proyectos.isEmpty()) {
+			throw new ResourceNotFoundException("No existen proyectos de esa Facultad");
+		}
+
+		return proyectos;
+	}
+
+	@GetMapping("Listado/Carrera/{carrera}")
+	public List<Proyecto> getProyectosCarrera(@PathVariable(name = "carrera")String Carrera)throws ResourceNotFoundException{
+		List<Proyecto> proyectos = RepositorioProyecto.findAllByCarreras_nombreCarrera(Carrera);
+
+		if(proyectos.isEmpty()) {
+			throw new ResourceNotFoundException("No existen proyectos de esa carrera");
+		}
+
+		return proyectos;
+	}
+
+	@GetMapping("Listado/Estado/{estado}")
+	public List<Proyecto> getProyectosEstado(@PathVariable(name = "estado")String Estado)throws ResourceNotFoundException{
+		List<Proyecto> proyectos = RepositorioProyecto.findAllByEstado(Estado);
+
+		if(proyectos.isEmpty()) {
+			throw new ResourceNotFoundException("No existen proyectos con ese Estado");
+		}
+
+		return proyectos;
+	}
+
 	@GetMapping("{id}")
 	public Proyecto getProyecto(@PathVariable(value = "id")Long idProyecto)throws ResourceNotFoundException{
 		Proyecto proyecto = RepositorioProyecto.findById(idProyecto)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe el Proyecto con ese ID"));
 		return proyecto;
 	}
+
 	@PostMapping("Registrar")
 	public Proyecto setProyecto(@Valid @RequestBody Proyecto proyecto)throws ResourceNotFoundException{
 		if(RepositorioProyecto.existsByCodigo(proyecto.getCodigo())) {
@@ -60,6 +93,9 @@ public class ControladorProyecto {
 		proyectoAct.setCodigo(proyecto.getCodigo());
 		proyectoAct.setNombreProyecto(proyecto.getNombreProyecto());
 		proyectoAct.setResolucion(proyecto.getResolucion());
+		proyectoAct.setEstado(proyecto.getEstado());
+		proyectoAct.setFacultad(proyecto.getFacultad());
+		proyectoAct.setCarreras(proyecto.getCarreras());
 
 		return ResponseEntity.ok(this.RepositorioProyecto.save(proyectoAct));
 	}

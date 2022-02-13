@@ -12,4 +12,6 @@ public interface RepositorioDocente extends JpaRepository<Docente, Long>{
 	List<Docente> findAllByOrderByIdDocenteDesc();
 	Boolean existsByCedulaDocente(String cedulaDocente);
 	Docente findByCedulaDocente(String cedulaDocente);
+
+	List<Docente> findAllBySexoDocenteAndIdCarreraBetween(String sexoDocente,Long idCarrera1, Long idCarrera2);
 }

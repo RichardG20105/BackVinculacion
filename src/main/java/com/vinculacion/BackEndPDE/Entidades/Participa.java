@@ -38,8 +38,11 @@ public class Participa {
 	@Column(name = "horasparticipacion")
 	private int horasParticipacion;
 
-	@Column(name = "anioparticipadoc")
-	private Date anioParticipaDoc;
+	@Column(name = "participacioninicio")
+	private Date participacionInicio;
+
+	@Column(name = "participacionfinal")
+	private Date participacionFinal;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "iddocente", referencedColumnName = "iddocente")
@@ -56,13 +59,14 @@ public class Participa {
 		super();
 	}
 
-	public Participa(String facultad, String cargo, int horasParticipacion, Date anioParticipaDoc, Docente docente,
-			Proyecto proyecto, Certificado... certificados) {
+	public Participa(String facultad, String cargo, int horasParticipacion, Date participacionInicio, Date participacionFinal,
+			Docente docente, Proyecto proyecto, Certificado... certificados) {
 		super();
 		this.facultad = facultad;
 		this.cargo = cargo;
 		this.horasParticipacion = horasParticipacion;
-		this.anioParticipaDoc = anioParticipaDoc;
+		this.participacionInicio = participacionInicio;
+		this.participacionFinal = participacionFinal;
 		this.docente = docente;
 		this.proyecto = proyecto;
 		for(Certificado certificado: certificados) certificado.setParticipa(this);
@@ -101,12 +105,20 @@ public class Participa {
 		this.horasParticipacion = horasParticipacion;
 	}
 
-	public Date getAnioParticipaDoc() {
-		return anioParticipaDoc;
+	public Date getParticipacionInicio() {
+		return participacionInicio;
 	}
 
-	public void setAnioParticipaDoc(Date anioParticipaDoc) {
-		this.anioParticipaDoc = anioParticipaDoc;
+	public void setParticipacionInicio(Date participacionInicio) {
+		this.participacionInicio = participacionInicio;
+	}
+
+	public Date getParticipacionFinal() {
+		return participacionFinal;
+	}
+
+	public void setParticipacionFinal(Date participacionFinal) {
+		this.participacionFinal = participacionFinal;
 	}
 
 	public Docente getDocente() {

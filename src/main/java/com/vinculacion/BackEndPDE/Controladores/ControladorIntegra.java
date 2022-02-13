@@ -93,7 +93,8 @@ public class ControladorIntegra {
 		Integra integraAct = RepositorioIntegra.findById(IDIntegra)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe un Docente en un Proyecto con ese ID"));
 
-		integraAct.setAnioParticipaEst(integra.getAnioParticipaEst());
+		integraAct.setIntegraInicio(integra.getIntegraInicio());
+		integraAct.setIntegraFinal(integra.getIntegraFinal());
 		integraAct.setFormaParticipacion(integra.getFormaParticipacion());
 
 		return ResponseEntity.ok(this.RepositorioIntegra.save(integraAct));

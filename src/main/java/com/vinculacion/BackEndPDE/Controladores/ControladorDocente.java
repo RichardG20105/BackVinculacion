@@ -18,13 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vinculacion.BackEndPDE.Entidades.Docente;
+import com.vinculacion.BackEndPDE.Entidades.Facultad;
 import com.vinculacion.BackEndPDE.Excepciones.ResourceNotFoundException;
+import com.vinculacion.BackEndPDE.Repositorio.RepositorioCarrera;
 import com.vinculacion.BackEndPDE.Repositorio.RepositorioDocente;
+import com.vinculacion.BackEndPDE.Repositorio.RepositorioFacultad;
 @RestController
 @RequestMapping("/Docente/")
 public class ControladorDocente {
 	@Autowired
 	private RepositorioDocente RepositorioDocente;
+
+	@Autowired
+	private RepositorioFacultad RepositorioFacultad;
+
+	@Autowired
+	private RepositorioCarrera RepositorioCarrera;
 
 	@GetMapping("ListarDocentes")
 	public List<Docente> getDocentes()throws ResourceNotFoundException{
@@ -49,6 +58,21 @@ public class ControladorDocente {
 		}else {
 			throw new ResourceNotFoundException("No existen un docente con ese número de cedula");
 		}
+	}
+
+	@GetMapping("Listado/{facultad}/{sexo}")
+	public List<Docente> getDocentesFacultadSexo(@PathVariable(value = "facultad")String Facultad,@PathVariable(value="sexo")String Sexo)throws ResourceNotFoundException{
+		Long idCarrera1, idCarrera2;
+
+		Facultad facultad = RepositorioFacultad.findByNombreFacultad(Facultad);
+		idCarrera1 = RepositorioCarrera.findTopByIdFacultad(facultad.getIdFacultad()).getIdCarrera();
+		idCarrera2 = RepositorioCarrera.findLastByIdFacultad(facultad.getIdFacultad()).getIdCarrera();
+
+		List<Docente> docentes = RepositorioDocente.findAllBySexoDocenteAndIdCarreraBetween(Sexo,idCarrera1, idCarrera2);
+
+		if(docentes.isEmpty())
+			throw new ResourceNotFoundException("No existen Docentes");
+		return docentes;
 	}
 
 	@PostMapping("Registrar")

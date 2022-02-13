@@ -1,10 +1,15 @@
 package com.vinculacion.BackEndPDE.Entidades;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,12 +24,17 @@ public class Facultad {
 	@Column(name = "nombrefacultad")
 	private String nombreFacultad;
 
+	@OneToMany(mappedBy = "facultad")
+	private Set<Proyecto> proyectos;
+
 	public Facultad() {
 		super();
 	}
-	public Facultad(String nombreFacultad) {
+	public Facultad(String nombreFacultad, Proyecto... proyectos) {
 		super();
 		this.nombreFacultad = nombreFacultad;
+		for(Proyecto proyecto: proyectos) proyecto.setFacultad(this);
+		this.proyectos = Stream.of(proyectos).collect(Collectors.toSet());
 	}
 
 	public Long getIdFacultad() {

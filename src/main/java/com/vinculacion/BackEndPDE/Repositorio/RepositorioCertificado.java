@@ -21,6 +21,6 @@ public interface RepositorioCertificado extends JpaRepository<Certificado, Long>
 
 	List<Certificado> findAllByParticipaIsNullAndFacultadIntegrante(String facultad);
 	List<Certificado> findAllByParticipaIsNullAndObservacionCertificado(String observacionCertificado);
-	
+
 	Optional<Certificado> findByCodigoCertificado(String codigoCertificado);
 }

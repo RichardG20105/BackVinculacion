@@ -35,8 +35,11 @@ public class Integra {
 	@Column(name = "formaparticipacion")
 	private String formaParticipacion;
 
-	@Column(name = "anioparticipaest")
-	private Date anioParticipaEst;
+	@Column(name = "integrainicio")
+	private Date integraInicio;
+
+	@Column(name = "integrafinal")
+	private Date integraFinal;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "idestudiante",referencedColumnName="idestudiante")
@@ -53,12 +56,13 @@ public class Integra {
 		super();
 	}
 
-	public Integra(String carrera,String formaParticipacion, Date anioParticipaEst, Estudiante estudiante, Proyecto proyecto,
-			Certificado... certificados) {
+	public Integra(String carrera,String formaParticipacion, Date integraInicio, Date integraFinal,
+			Estudiante estudiante, Proyecto proyecto, Certificado... certificados) {
 		super();
 		this.carrera = carrera;
 		this.formaParticipacion = formaParticipacion;
-		this.anioParticipaEst = anioParticipaEst;
+		this.integraInicio = integraInicio;
+		this.integraFinal = integraFinal;
 		this.estudiante = estudiante;
 		this.proyecto = proyecto;
 		for(Certificado certificado: certificados) certificado.setIntegra(this);
@@ -89,12 +93,20 @@ public class Integra {
 		this.formaParticipacion = formaParticipacion;
 	}
 
-	public Date getAnioParticipaEst() {
-		return anioParticipaEst;
+	public Date getIntegraInicio() {
+		return integraInicio;
 	}
 
-	public void setAnioParticipaEst(Date anioParticipaEst) {
-		this.anioParticipaEst = anioParticipaEst;
+	public void setIntegraInicio(Date integraInicio) {
+		this.integraInicio = integraInicio;
+	}
+
+	public Date getIntegraFinal() {
+		return integraFinal;
+	}
+
+	public void setIntegraFinal(Date integraFinal) {
+		this.integraFinal = integraFinal;
 	}
 
 	public Estudiante getEstudiante() {

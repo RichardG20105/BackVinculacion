@@ -34,7 +34,7 @@ public class Certificado {
 
 	@Column(name = "observacioncertificado")
 	private String observacionCertificado;
-	
+
 	@Column(name = "codigocertificado")
 	private String codigoCertificado;
 
@@ -101,7 +101,7 @@ public class Certificado {
 	public void setObservacionCertificado(String observacionCertificado) {
 		this.observacionCertificado = observacionCertificado;
 	}
-	
+
 	public String getCodigoCertificado() {
 		return codigoCertificado;
 	}

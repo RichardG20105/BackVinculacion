@@ -50,7 +50,6 @@ public class ControladorParticipa {
 		List<Participa> participacion = RepositorioParticipa.findDocenteDistinctByDocente_relacionLaboral(RelacionLaboral);
 		return participacion;
 	}
-
 	//@GetMapping("Lista/{relacionLaboral}/{anioDefinido}")
 
 	@GetMapping("{id}")
@@ -77,6 +76,9 @@ public class ControladorParticipa {
 
 	@PostMapping("Registrar")
 	public Participa setParticipa(@Valid @RequestBody Participa participa) throws ResourceNotFoundException{
+		if(RepositorioParticipa.existsByDocenteAndProyectoAndCargo(participa.getDocente(),participa.getProyecto(),"Coordinador")) {
+			throw new ResourceNotFoundException("El docente ya es Coordinador del Proyecto");
+		}
 		return this.RepositorioParticipa.save(participa);
 	}
 
@@ -84,14 +86,14 @@ public class ControladorParticipa {
 	public ResponseEntity<Participa> putParticipa(@PathVariable(value = "id")Long IDParticipa,@Valid @RequestBody Participa participa)throws ResourceNotFoundException{
 		Participa participaAct = RepositorioParticipa.findById(IDParticipa)
 				.orElseThrow(() -> new ResourceNotFoundException("No existe una participacion con este ID"));
-		
+
 		SimpleDateFormat getAnio = new SimpleDateFormat("yyyy");
-		int anio = Integer.parseInt(getAnio.format(participa.getAnioParticipaDoc()));
+		int anio = Integer.parseInt(getAnio.format(participa.getParticipacionInicio()));
 		int totalHoras = participa.getHorasParticipacion();
 		boolean mismo = false;
-		
+
 		List<Participa> participaciones = RepositorioParticipa.findAllByDocenteAnioParticipa(participa.getDocente().getIdDocente(),anio);
-		
+
 		if(participaciones.size() > 1) {
 			for(Participa partici: participaciones) {
 				if(partici.getIdParticipa() == participa.getIdParticipa())
@@ -102,16 +104,17 @@ public class ControladorParticipa {
 		}
 		if(participaciones.size() == 2) {
 			for(Participa participacion: participaciones) {
-				if(participacion.getIdParticipa() != participa.getIdParticipa()) 
+				if(participacion.getIdParticipa() != participa.getIdParticipa())
 					totalHoras += participacion.getHorasParticipacion();
 			}
 		}
-		
+
 		if(totalHoras > 4) {
 			throw new ResourceNotFoundException("El docente excede el maximo de horas permitidas");
 		}
-		
-		participaAct.setAnioParticipaDoc(participa.getAnioParticipaDoc());
+
+		participaAct.setParticipacionInicio(participa.getParticipacionInicio());
+		participaAct.setParticipacionFinal(participa.getParticipacionFinal());
 		participaAct.setHorasParticipacion(participa.getHorasParticipacion());
 
 		return ResponseEntity.ok(this.RepositorioParticipa.save(participaAct));

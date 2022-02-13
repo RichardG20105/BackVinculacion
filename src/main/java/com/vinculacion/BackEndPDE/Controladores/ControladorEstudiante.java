@@ -52,7 +52,7 @@ public class ControladorEstudiante {
 	}
 
 	@GetMapping("Listado/{facultad}/{sexo}")
-	public List<Estudiante> getEstudianteFacultadGenero(@PathVariable(value = "facultad")String Facultad, @PathVariable(value = "sexo")String SexoEstudiante)throws ResourceNotFoundException{
+	public List<Estudiante> getEstudianteFacultadSexo(@PathVariable(value = "facultad")String Facultad, @PathVariable(value = "sexo")String SexoEstudiante)throws ResourceNotFoundException{
 		Long idCarrera1, idCarrera2;
 
 		Facultad facultad = RepositorioFacultad.findByNombreFacultad(Facultad);
