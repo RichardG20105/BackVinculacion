@@ -14,6 +14,8 @@ import com.vinculacion.BackEndPDE.Entidades.Participa;
 public interface RepositorioCertificado extends JpaRepository<Certificado, Long>{
 	Boolean existsByParticipa(Participa participa);
 	Boolean existsByIntegra(Integra integra);
+	List<Certificado> findAllByParticipa(Participa participa);
+	List<Certificado> findAllByIntegra(Integra integra);
 	List<Certificado> findAllByIntegraIsNull();
 	List<Certificado> findAllByParticipaIsNull();
 	List<Certificado> findAllByIntegraIsNullAndObservacionCertificado(String observacionCertificado);

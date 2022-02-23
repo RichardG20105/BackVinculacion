@@ -92,19 +92,20 @@ public class ControladorCertificado {
 	public Certificado setCertificado(@Valid @RequestBody Certificado certificado)throws ResourceNotFoundException{
 		Calendar fecha = Calendar.getInstance(TimeZone.getTimeZone("GMT-5"));
 		fecha.add(Calendar.DATE, 0);
-
+		int Numero = 1;
 		String Codigo;
 
 		if(certificado.getParticipa() != null) {
 			if(RepositorioCertificado.existsByParticipa(certificado.getParticipa())){
-				throw new ResourceNotFoundException("Ya existe un certificado generado");
+				Numero += RepositorioCertificado.findAllByParticipa(certificado.getParticipa()).size();
 			}
 
 			if(certificado.getParticipa().getParticipacionInicio() == null || certificado.getParticipa().getParticipacionFinal() == null) {
 				throw new ResourceNotFoundException("Se necesita deifinir las fechas de Participación del Docente");
 			}
+			
 
-			Codigo = "DV-" + certificado.getParticipa().getDocente().getIdDocente() + certificado.getParticipa().getIdParticipa() +
+			Codigo = "DV-1" + Numero + certificado.getParticipa().getDocente().getIdDocente() + certificado.getParticipa().getIdParticipa() +
 					fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);
 
 			certificado.setCodigoCertificado(Codigo);
@@ -112,7 +113,7 @@ public class ControladorCertificado {
 		}
 
 		if(RepositorioCertificado.existsByIntegra(certificado.getIntegra())) {
-			throw new ResourceNotFoundException("Ya existe un certificado generado");
+			Numero += RepositorioCertificado.findAllByIntegra(certificado.getIntegra()).size();
 		}
 
 		if(certificado.getIntegra().getIntegraInicio() == null || certificado.getIntegra().getIntegraFinal() == null) {
@@ -123,7 +124,7 @@ public class ControladorCertificado {
 			throw new ResourceNotFoundException("Se necesita definir la Forma de Participacion del Estudiante");
 		}
 
-		Codigo = "DV-" + certificado.getIntegra().getEstudiante().getIdEstudiante() + certificado.getIntegra().getIdIntegra() +
+		Codigo = "DV-2" + Numero +certificado.getIntegra().getEstudiante().getIdEstudiante() + certificado.getIntegra().getIdIntegra() +
 				fecha.get(Calendar.DAY_OF_MONTH) + fecha.get(Calendar.DAY_OF_WEEK) + fecha.get(Calendar.HOUR_OF_DAY) + fecha.get(Calendar.MINUTE);
 
 		certificado.setCodigoCertificado(Codigo);
